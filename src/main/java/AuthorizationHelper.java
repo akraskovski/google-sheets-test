@@ -6,21 +6,24 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.MemoryDataStoreFactory;
+import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.sheets.v4.SheetsScopes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import static java.util.Optional.ofNullable;
 
 public class AuthorizationHelper {
 
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
+    private static final Set<String> SCOPES = Set.of(
+        DriveScopes.DRIVE_READONLY,
+        SheetsScopes.SPREADSHEETS
+    );
 
     public static Credential authorize() throws IOException, GeneralSecurityException {
         var in = ofNullable(SheetsSandbox.class.getResourceAsStream(CREDENTIALS_FILE_PATH))
